@@ -1,0 +1,17 @@
+version:  '3'
+
+services:
+  web_server:
+
+    build:
+      context:  requierements/nginx 
+      args:
+
+        key_dir: /etc/ssl/private
+        cert_dir: /etc/ssl/certs
+
+        key_name: nginx-selfsigned.key
+        cert_name: nginx-selfsigned.crt
+
+    ports:
+      - "443:443"
