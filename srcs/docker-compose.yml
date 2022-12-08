@@ -3,15 +3,16 @@ version:  '3'
 services:
   web_server:
 
+    container_name: web_server
+
     build:
       context:  requierements/nginx 
-      args:
-
-        key_dir: /etc/ssl/private
-        cert_dir: /etc/ssl/certs
-
-        key_name: nginx-selfsigned.key
-        cert_name: nginx-selfsigned.crt
 
     ports:
       - "443:443"
+
+    environment:
+      - SSL_KEY_PATH=${SSL_KEY_PATH}
+      - SSL_CERT_PATH=${SSL_CERT_PATH}
+      - NGINX_CONFIG_DIR=${NGINX_CONFIG_DIR}
+      - SERVER_NAME=${SERVER_NAME}
