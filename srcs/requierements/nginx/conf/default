@@ -14,10 +14,29 @@ server {
 	ssl_certificate		${SSL_CERT_PATH};
 	ssl_certificate_key	${SSL_KEY_PATH};
 
-	root /usr/share/nginx/html;
-	index index.html;
+	root	/var/www/html;
+	index	index.php;
 
 	location / {
 		try_files $uri $uri/ =404;
+	}
+
+	# '~' : case-sensitive regular expression match
+	# '$' : matches the end of the input string.
+	# Match all requests ending in .php
+
+	location ~ \.php$ {
+		# https://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_split_path_info
+		fastcgi_split_path_info ^(.+\.php)(/.+)$;
+
+		# https://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_pass
+    		fastcgi_pass wordpress:9000;
+
+		# https://nginx.org/en/docs/http/ngx_http_fastcgi_module.html#fastcgi_index
+		fastcgi_index index.php;
+
+		include fastcgi_params;
+		fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+		fastcgi_param SCRIPT_NAME $fastcgi_script_name;
 	}
 }

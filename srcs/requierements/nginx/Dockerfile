@@ -2,10 +2,10 @@
 FROM	debian:buster
 
 # Run apt-get update and install nginx and openssl
-RUN	apt-get update
-RUN	apt-get install nginx -y
-RUN	apt-get install openssl -y
-RUN	apt-get install gettext-base -y
+RUN	apt-get update && apt-get install -y \
+	nginx \
+	openssl \
+	gettext
 
 # Copy the configuration file into the container.
 COPY conf/default default.template

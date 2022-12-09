@@ -15,6 +15,4 @@ openssl req \
 
 envsubst < default.template > $NGINX_CONFIG_DIR/default
 
-rm default.template
-
 exec nginx -g 'daemon off;'

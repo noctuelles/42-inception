@@ -3,10 +3,13 @@ version:  '3'
 services:
   web_server:
 
-    container_name: web_server
+    container_name: nginx 
 
     build:
       context:  requierements/nginx 
+
+    volumes:
+      - /home/plouvel/data/html:/var/www/html
 
     ports:
       - "443:443"
@@ -16,3 +19,19 @@ services:
       - SSL_CERT_PATH=${SSL_CERT_PATH}
       - NGINX_CONFIG_DIR=${NGINX_CONFIG_DIR}
       - SERVER_NAME=${SERVER_NAME}
+
+  database:
+
+      container_name: mariadb
+
+      build:
+        context:  requierements/mariadb
+
+      volumes:
+        - /home/plouvel/data/mysql:/var/lib/mysql
+
+      environment:
+        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWD}
+        - MYSQL_DATABASE=${MYSQL_DATABASE}
+        - MYSQL_USER=${MYSQL_USER}
+        - MYSQL_PASSWORD=${MYSQL_PASSWD}
