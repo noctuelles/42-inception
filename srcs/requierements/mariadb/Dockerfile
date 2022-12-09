@@ -10,6 +10,8 @@ LABEL	description="MariaDB Server for Inception"
 
 COPY tools/script.sh script.sh
 
-EXPOSE 3306
+RUN chmod +x script.sh
 
 ENTRYPOINT ["./script.sh"]
+
+EXPOSE 3306
