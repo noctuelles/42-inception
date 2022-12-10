@@ -31,7 +31,7 @@ if [[ ! -d /var/www/html/wordpress ]]; then
 		exit 1
 	fi
 
-	echo " Sucess."
+	echo " Success."
 else
 	echo " already configured."
 fi
