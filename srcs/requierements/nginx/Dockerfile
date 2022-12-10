@@ -9,9 +9,9 @@ RUN	apt-get update && apt-get install -y \
 
 # Copy the configuration file into the container.
 COPY conf/default default.template
-COPY tools/script.sh script.sh
+COPY tools/configure.sh configure.sh
 
 # Expose the 443 port of our server.
 EXPOSE 443/tcp
 
-ENTRYPOINT ["./script.sh"]
+ENTRYPOINT ["./configure.sh"]

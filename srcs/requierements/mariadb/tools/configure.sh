@@ -48,6 +48,6 @@ else
 	echo " already configured."
 fi
 
-echo "All good now! Starting deamon."
+echo "Starting deamon mysqld..."
 
 exec mysqld --user=mysql

@@ -9,10 +9,10 @@ LABEL	version="1.0"
 LABEL	description="MariaDB Server for Inception"
 
 COPY conf/mariadb-server.conf /etc/mysql/mariadb.conf.d/50-server.cnf
-COPY tools/script.sh script.sh
+COPY tools/configure.sh configure.sh
 
-RUN chmod +x script.sh
+RUN chmod +x configure.sh
 
 EXPOSE 3306
 
-ENTRYPOINT ["./script.sh"]
+ENTRYPOINT ["./configure.sh"]
