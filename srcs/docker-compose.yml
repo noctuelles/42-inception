@@ -10,8 +10,8 @@ services:
       - /home/plouvel/data/html:/var/www/html
     ports:
       - "443:443"
-    links:
-        - wordpress
+    networks:
+      - backend
     environment:
       - SSL_KEY_PATH=${SSL_KEY_PATH}
       - SSL_CERT_PATH=${SSL_CERT_PATH}
@@ -27,6 +27,8 @@ services:
     depends_on:
         - database
     restart: always
+    networks:
+      - backend
     environment:
       - WP_DATABASE=${WP_DATABASE}
       - WP_DATABASE_USER=${WP_DATABASE_USER}
@@ -43,8 +45,14 @@ services:
     volumes:
       - /home/plouvel/data/mysql:/var/lib/mysql
     restart: always
+    networks:
+      - backend
     environment:
       - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWD}
       - WP_DATABASE=${WP_DATABASE}
       - WP_DATABASE_USER=${WP_DATABASE_USER}
       - WP_DATABASE_USER_PASSWORD=${WP_DATABASE_USER_PASSWORD}
+
+networks:
+  backend:
+    driver: bridge

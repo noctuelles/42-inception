@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo -n "Initializing MariaDB data directory..."
+echo -n "Configuring MariaDB..."
 
 if [[ ! -d /run/mysqld ]]; then
 	mkdir -p /run/mysqld/
@@ -14,13 +14,13 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 	if mysql_install_db --user=mysql \
 		--datadir=/var/lib/mysql \
 		> /dev/null; then
-		echo " Sucess!"
+		echo " Sucess."
 	else
-		echo " Failure!"
+		echo " Failure."
 		exit 1
 	fi
 
-	echo "Executing init SQL script..."
+	echo "Configuring database..."
 
 	tmpfile=$(mktemp)
 
@@ -48,6 +48,6 @@ else
 	echo " already configured."
 fi
 
-echo "Starting deamon mysqld..."
+echo "Starting mysqld..."
 
 exec mysqld --user=mysql

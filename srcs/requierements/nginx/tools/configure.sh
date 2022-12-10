@@ -21,7 +21,7 @@ else
 	exit 1
 fi
 
-envsubst < default.template > $NGINX_CONFIG_DIR/default
+envsubst < plouvel.42.fr.conf.template > $NGINX_CONFIG_DIR/default
 
 echo "Starting nginx..."
 exec nginx -g 'daemon off;'

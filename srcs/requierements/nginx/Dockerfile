@@ -8,7 +8,8 @@ RUN	apt-get update && apt-get install -y \
 	gettext
 
 # Copy the configuration file into the container.
-COPY conf/default default.template
+COPY conf/plouvel.42.fr.conf plouvel.42.fr.conf.template
+COPY conf/nginx.conf /etc/nginx/nginx.conf
 COPY tools/configure.sh configure.sh
 
 # Expose the 443 port of our server.
