@@ -39,7 +39,7 @@ FLUSH PRIVILEGES;
 EOF
 	# https://mariadb.com/kb/en/mysqld-options/#-bootstrap
 
-	if ! mysqld --user=mysql --verbose --bootstrap < $tmpfile ; then
+	if ! mysqld --user=mysql --bootstrap < $tmpfile ; then
 		exit 1
 	fi
 
