@@ -8,10 +8,11 @@ RUN	apt-get update && apt-get install -y \
 LABEL	version="1.0"
 LABEL	description="MariaDB Server for Inception"
 
+COPY conf/mariadb-server.conf /etc/mysql/mariadb.conf.d/50-server.cnf
 COPY tools/script.sh script.sh
 
 RUN chmod +x script.sh
 
-ENTRYPOINT ["./script.sh"]
-
 EXPOSE 3306
+
+ENTRYPOINT ["./script.sh"]

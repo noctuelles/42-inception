@@ -26,9 +26,14 @@ services:
       context:  requierements/wordpress
     depends_on:
         - database
-    links:
-      - database 
     restart: always
+    environment:
+      - WP_DATABASE=${WP_DATABASE}
+      - WP_DATABASE_USER=${WP_DATABASE_USER}
+      - WP_DATABASE_USER_PASSWORD=${WP_DATABASE_USER_PASSWORD}
+      - WP_ADMIN=${WP_ADMIN}
+      - WP_ADMIN_PASSWORD=${WP_ADMIN_PASSWORD}
+      - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
 
   database:
 
