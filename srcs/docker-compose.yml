@@ -1,42 +1,45 @@
 version:  '3'
 
 services:
-  web_server:
+  server:
 
     container_name: nginx 
-
     build:
       context:  requierements/nginx 
-
     volumes:
       - /home/plouvel/data/html:/var/www/html
-
     ports:
       - "443:443"
-
+    links:
+        - wordpress
     environment:
       - SSL_KEY_PATH=${SSL_KEY_PATH}
       - SSL_CERT_PATH=${SSL_CERT_PATH}
       - NGINX_CONFIG_DIR=${NGINX_CONFIG_DIR}
       - SERVER_NAME=${SERVER_NAME}
 
+  wordpress:
+    container_name: wordpress
+    volumes:
+      - /home/plouvel/data/html:/var/www/html
+    build:
+      context:  requierements/wordpress
+    depends_on:
+        - database
+    links:
+      - database 
+    restart: always
+
   database:
 
-      container_name: mariadb
-
-      build:
-        context:  requierements/mariadb
-
-      volumes:
-        - /home/plouvel/data/mysql:/var/lib/mysql
-
-      restart: always
-
-      ports:
-        - "3306:3306"
-
-      environment:
-        - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWD}
-        - WP_DATABASE=${WP_DATABASE}
-        - WP_DATABASE_USER=${WP_DATABASE_USER}
-        - WP_DATABASE_USER_PASSWORD=${WP_DATABASE_USER_PASSWORD}
+    container_name: mariadb
+    build:
+      context:  requierements/mariadb
+    volumes:
+      - /home/plouvel/data/mysql:/var/lib/mysql
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWD}
+      - WP_DATABASE=${WP_DATABASE}
+      - WP_DATABASE_USER=${WP_DATABASE_USER}
+      - WP_DATABASE_USER_PASSWORD=${WP_DATABASE_USER_PASSWORD}

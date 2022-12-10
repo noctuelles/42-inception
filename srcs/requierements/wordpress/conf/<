@@ -1,0 +1,5 @@
+#!/bin/bash
+
+if [[ ! -d /var/www/html/wordpress ]]
+
+curl https://wordpress.org/latest.tar.gz -o
