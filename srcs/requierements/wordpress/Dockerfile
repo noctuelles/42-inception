@@ -31,12 +31,13 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 	&& mv wp-cli.phar /usr/local/bin/wp \
 	&& mkdir -p /run/php
 
-COPY tools/configure.sh configure.sh
-COPY conf/php.ini	/etc/php/8.1/fpm/php.ini
-COPY conf/www.conf	/etc/php/8.1/fpm/pool.d/www.conf
+ADD	https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait	/wait
+COPY	tools/configure.sh 	/configure.sh
+COPY	conf/php.ini		/etc/php/8.1/fpm/php.ini
+COPY	conf/www.conf		/etc/php/8.1/fpm/pool.d/www.conf
 
-RUN chmod +x configure.sh
+RUN	chmod +x /configure.sh && chmod +x /wait
 
 EXPOSE 9000/tcp
 
-ENTRYPOINT ["./configure.sh"]
+ENTRYPOINT ["/configure.sh"]

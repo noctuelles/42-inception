@@ -9,8 +9,6 @@ services:
       args:
         - SSL_KEY_PATH=${SSL_KEY_PATH}
         - SSL_CERT_PATH=${SSL_CERT_PATH}
-    depends_on:
-      - wordpress
     volumes:
       - /home/plouvel/data/html:/var/www/html
     ports:
@@ -19,6 +17,10 @@ services:
     networks:
       - backend
     environment:
+      - WAIT_HOSTS=wordpress:9000
+      - WAIT_LOGGER_LEVEL=off
+      - WP_PATH=${WP_PATH}
+      - ADM_PATH=${ADM_PATH}
       - SSL_KEY_PATH=${SSL_KEY_PATH}
       - SSL_CERT_PATH=${SSL_CERT_PATH}
       - NGINX_CONFIG_DIR=${NGINX_CONFIG_DIR}
@@ -30,12 +32,13 @@ services:
       - /home/plouvel/data/html:/var/www/html
     build:
       context:  requierements/wordpress
-    depends_on:
-        - database
     restart: always
     networks:
       - backend
     environment:
+      - WAIT_HOSTS=database:3306
+      - WAIT_LOGGER_LEVEL=off
+      - WP_PATH=${WP_PATH}
       - WP_BLOG_TITLE=${WP_BLOG_TITLE}
       - WP_DB_NAME=${WP_DB_NAME}
       - WP_DB_USER=${WP_DB_USER}
@@ -45,13 +48,15 @@ services:
       - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
 
   cache:
-
     container_name: redis 
     build:
       context:  requierements/redis
     restart: always
     networks:
       - backend
+    environment:
+      - WAIT_HOSTS=database:3306, wordpress:9000
+      - WAIT_LOGGER_LEVEL=off
 
   database:
 

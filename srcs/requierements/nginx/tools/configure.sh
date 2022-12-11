@@ -1,5 +1,7 @@
 #!/bin/bash
 
+./wait
+
 export DOLLAR="$"
 
 envsubst < plouvel.42.fr.conf.template > $NGINX_CONFIG_DIR/default

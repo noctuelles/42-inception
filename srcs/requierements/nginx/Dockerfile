@@ -19,9 +19,12 @@ RUN	mkdir -p $(dirname $SSL_KEY_PATH) && mkdir -p $(dirname $SSL_CERT_PATH) && o
 	-subj "/C=FR/ST=Ile-de-France/L=Paris/O=42 Network/OU=Ecole 42/CN=plouvel.42.fr"
 
 # Copy the configuration file into the container.
-COPY conf/plouvel.42.fr.conf plouvel.42.fr.conf.template
-COPY conf/nginx.conf /etc/nginx/nginx.conf
-COPY tools/configure.sh configure.sh
+ADD	https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait	/wait
+COPY	conf/plouvel.42.fr.conf plouvel.42.fr.conf.template
+COPY	conf/nginx.conf /etc/nginx/nginx.conf
+COPY	tools/configure.sh configure.sh
+
+RUN	chmod +x /configure.sh && chmod +x /wait
 
 # Expose the 443 port of our server.
 EXPOSE 443/tcp
