@@ -6,10 +6,16 @@ services:
     container_name: nginx 
     build:
       context:  requierements/nginx 
+      args:
+        - SSL_KEY_PATH=${SSL_KEY_PATH}
+        - SSL_CERT_PATH=${SSL_CERT_PATH}
+    depends_on:
+      - wordpress
     volumes:
       - /home/plouvel/data/html:/var/www/html
     ports:
       - "443:443"
+    restart: always
     networks:
       - backend
     environment:
@@ -30,12 +36,22 @@ services:
     networks:
       - backend
     environment:
-      - WP_DATABASE=${WP_DATABASE}
-      - WP_DATABASE_USER=${WP_DATABASE_USER}
-      - WP_DATABASE_USER_PASSWORD=${WP_DATABASE_USER_PASSWORD}
-      - WP_ADMIN=${WP_ADMIN}
-      - WP_ADMIN_PASSWORD=${WP_ADMIN_PASSWORD}
+      - WP_BLOG_TITLE=${WP_BLOG_TITLE}
+      - WP_DB_NAME=${WP_DB_NAME}
+      - WP_DB_USER=${WP_DB_USER}
+      - WP_DB_USER_PWD=${WP_DB_USER_PWD}
+      - WP_ADMIN_NAME=${WP_ADMIN_NAME}
+      - WP_ADMIN_PWD=${WP_ADMIN_PWD}
       - WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL}
+
+  cache:
+
+    container_name: redis 
+    build:
+      context:  requierements/redis
+    restart: always
+    networks:
+      - backend
 
   database:
 
@@ -48,10 +64,10 @@ services:
     networks:
       - backend
     environment:
-      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWD}
-      - WP_DATABASE=${WP_DATABASE}
-      - WP_DATABASE_USER=${WP_DATABASE_USER}
-      - WP_DATABASE_USER_PASSWORD=${WP_DATABASE_USER_PASSWORD}
+      - MYSQL_ROOT_PWD=${MYSQL_ROOT_PWD}
+      - WP_DB_NAME=${WP_DB_NAME}
+      - WP_DB_USER=${WP_DB_USER}
+      - WP_DB_USER_PWD=${WP_DB_USER_PWD}
 
 networks:
   backend:

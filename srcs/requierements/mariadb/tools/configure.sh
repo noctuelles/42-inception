@@ -25,16 +25,16 @@ if [ ! -d "/var/lib/mysql/mysql" ]; then
 	tmpfile=$(mktemp)
 
 	cat << EOF > $tmpfile
-UPDATE mysql.user SET Password = PASSWORD('${MYSQL_ROOT_PASSWORD}') WHERE User = 'root';
+UPDATE mysql.user SET Password = PASSWORD('${MYSQL_ROOT_PWD}') WHERE User = 'root';
 DELETE FROM mysql.user WHERE User='';
 DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
 DROP DATABASE IF EXISTS test;
 DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
 FLUSH PRIVILEGES;
 
-CREATE DATABASE ${WP_DATABASE} CHARACTER SET utf8 COLLATE utf8_general_ci;
-CREATE USER '${WP_DATABASE_USER}'@'%' IDENTIFIED BY '${WP_DATABASE_USER_PASSWORD}';
-GRANT ALL PRIVILEGES ON ${WP_DATABASE}.* TO '${WP_DATABASE_USER}'@'%' IDENTIFIED BY '${WP_DATABASE_USER_PASSWORD}';
+CREATE DATABASE ${WP_DB_NAME} CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE USER '${WP_DB_USER}'@'%' IDENTIFIED BY '${WP_DB_USER_PWD}';
+GRANT ALL PRIVILEGES ON ${WP_DB_NAME}.* TO '${WP_DB_USER}'@'%' IDENTIFIED BY '${WP_DB_USER_PWD}';
 FLUSH PRIVILEGES;
 EOF
 	# https://mariadb.com/kb/en/mysqld-options/#-bootstrap
