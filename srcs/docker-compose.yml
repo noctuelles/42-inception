@@ -17,7 +17,7 @@ services:
     networks:
       - backend
     environment:
-      - WAIT_HOSTS=wordpress:9000
+      - WAIT_HOSTS=wordpress:9000, adminer:9000
       - WAIT_LOGGER_LEVEL=off
       - WP_PATH=${WP_PATH}
       - ADM_PATH=${ADM_PATH}
@@ -73,6 +73,19 @@ services:
       - WP_DB_NAME=${WP_DB_NAME}
       - WP_DB_USER=${WP_DB_USER}
       - WP_DB_USER_PWD=${WP_DB_USER_PWD}
+
+  adminer:
+    container_name: adminer
+    build:
+      context:  requierements/adminer
+    volumes:
+      - /home/plouvel/data/html:/var/www/html
+    restart: always
+    networks:
+      - backend
+    environment:
+      - ADM_PATH=${ADM_PATH}
+      - ADM_MYSQL_DOWNLOAD_LINK=${ADM_MYSQL_DOWNLOAD_LINK}
 
 networks:
   backend:
