@@ -21,7 +21,8 @@ RUN	mkdir -p $(dirname $SSL_KEY_PATH) && mkdir -p $(dirname $SSL_CERT_PATH) && o
 # Copy the configuration file into the container.
 ADD	https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait	/wait
 COPY	conf/plouvel.42.fr.conf	plouvel.42.fr.conf.template
-COPY	conf/adminer.conf	 adminer.42.fr.conf.template
+COPY	conf/adminer.conf	adminer.42.fr.conf.template
+COPY	conf/perso.conf		perso.42.fr.conf.template
 COPY	conf/nginx.conf /etc/nginx/nginx.conf
 COPY	tools/configure.sh configure.sh
 
