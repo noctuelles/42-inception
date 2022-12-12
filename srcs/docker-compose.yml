@@ -18,6 +18,8 @@ services:
     restart: always
     networks:
       - wp-site
+    depends_on:
+      - wordpress
     environment:
       - WAIT_HOSTS=wordpress:9000, adminer:9000
       - WAIT_LOGGER_LEVEL=off
@@ -34,6 +36,8 @@ services:
       - wp-data:/var/www/html/wordpress 
     build:
       context:  requierements/wordpress
+    depends_on:
+      - database
     restart: always
     networks:
       - wp-site
@@ -54,6 +58,8 @@ services:
     build:
       context:  requierements/redis
     restart: always
+    depends_on:
+      - wordpress
     networks:
       - wp-site
     environment:
@@ -84,6 +90,8 @@ services:
     volumes:
       - adminer-data:/var/www/html/adminer
     restart: always
+    depends_on:
+      - database
     networks:
       - wp-site
     environment:
@@ -107,6 +115,8 @@ services:
       - "20:20"
       - "21:21"
       - "21000:21000"
+    depends_on:
+      - wordpress
     restart: always
     networks:
       - misc

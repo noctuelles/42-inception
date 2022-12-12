@@ -15,7 +15,8 @@ RUN	apt-get update && apt-get install -y \
 RUN	mkdir -p /var/run/vsftpd/empty && mkdir -p /etc/vsftpd \
 	&& useradd --no-create-home $FTP_USER_NAME \
 	&& echo "$FTP_USER_NAME:$FTP_USER_PWD" | chpasswd \
-	&& mkdir -p $(dirname $SSL_FTP_KEY_PATH) && mkdir -p $(dirname $SSL_FTP_CERT_PATH) && openssl req \
+	&& mkdir -p $(dirname $SSL_FTP_KEY_PATH) && mkdir -p $(dirname $SSL_FTP_CERT_PATH) \
+	&& openssl req \
 	-x509 \
 	-nodes \
 	-days 365 \
