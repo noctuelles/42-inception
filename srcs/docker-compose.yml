@@ -12,13 +12,14 @@ services:
     volumes:
       - wp-data:/var/www/html/wordpress 
       - adminer-data:/var/www/html/adminer
+      - perso-data:/var/www/html/perso
     ports:
       - "443:443"
     restart: always
     networks:
-      - inception
+      - wp-site
     environment:
-      - WAIT_HOSTS=wordpress:9000
+      - WAIT_HOSTS=wordpress:9000, adminer:9000
       - WAIT_LOGGER_LEVEL=off
       - WP_PATH=${WP_PATH}
       - ADM_PATH=${ADM_PATH}
@@ -35,7 +36,7 @@ services:
       context:  requierements/wordpress
     restart: always
     networks:
-      - inception
+      - wp-site
     environment:
       - WAIT_HOSTS=database:3306
       - WAIT_LOGGER_LEVEL=off
@@ -54,7 +55,7 @@ services:
       context:  requierements/redis
     restart: always
     networks:
-      - inception
+      - wp-site
     environment:
       - WAIT_HOSTS=database:3306, wordpress:9000
       - WAIT_LOGGER_LEVEL=off
@@ -68,7 +69,7 @@ services:
       - mysql-data:/var/lib/mysql
     restart: always
     networks:
-      - inception
+      - wp-site
     environment:
       - MYSQL_ROOT_PWD=${MYSQL_ROOT_PWD}
       - WP_DB_NAME=${WP_DB_NAME}
@@ -84,7 +85,7 @@ services:
       - adminer-data:/var/www/html/adminer
     restart: always
     networks:
-      - inception
+      - wp-site
     environment:
       - WAIT_HOSTS=database:3306
       - WAIT_LOGGER_LEVEL=off
@@ -107,13 +108,17 @@ services:
       - "21:21"
       - "21000:21000"
     restart: always
+    networks:
+      - misc
     environment:
       - SSL_FTP_KEY_PATH=${SSL_FTP_KEY_PATH}
       - SSL_FTP_CERT_PATH=${SSL_FTP_CERT_PATH}
       - FTP_USER_NAME=${FTP_USER_NAME}
 
 networks:
-  inception:
+  wp-site:
+    driver: bridge
+  misc:
     driver: bridge
 
 volumes:
@@ -134,4 +139,10 @@ volumes:
     driver_opts:
       type: none
       device: "/home/plouvel/data/mysql"
+      o: bind
+  perso-data:
+    name: mysql-data
+    driver_opts:
+      type: none
+      device: "/home/plouvel/data/perso"
       o: bind

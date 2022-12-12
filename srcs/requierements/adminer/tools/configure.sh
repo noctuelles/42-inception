@@ -3,7 +3,7 @@
 ./wait
 
 if [ ! -f ${ADM_PATH}/index.php ]; then
-	wget -O ${ADM_PATH}/index.php ${ADM_MYSQL_DOWNLOAD_LINK}
+	wget -q -O ${ADM_PATH}/index.php ${ADM_MYSQL_DOWNLOAD_LINK}
 fi
 
 echo "Starting php-fpm..."
