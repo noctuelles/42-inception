@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 ./wait
 
 if [ ! -f ${ADM_PATH}/index.php ]; then

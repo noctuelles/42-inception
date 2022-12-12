@@ -9,6 +9,7 @@ RUN	apt-get update && apt-get install -y \
 	vsftpd \
 	openssl \
 	gettext \
+	dumb-init \
 	&& apt-get clean \
 	&& rm -rf /var/lib/apt/lists/*
 
@@ -32,4 +33,3 @@ RUN	chmod +x /configure.sh
 EXPOSE 21 20 21000
 
 ENTRYPOINT ["/configure.sh"]
-CMD ["vsftpd"]

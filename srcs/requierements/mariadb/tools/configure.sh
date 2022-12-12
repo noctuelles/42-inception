@@ -1,24 +1,16 @@
 #!/bin/bash
 
-echo -n "Configuring MariaDB..."
+set -e
 
-if [[ ! -d /run/mysqld ]]; then
-	mkdir -p /run/mysqld/
-	chown -R mysql:mysql /run/mysqld/
-fi
+echo -n "Configuring MariaDB..."
 
 if [ ! -d "/var/lib/mysql/mysql" ]; then
 	
 	chown -R mysql:mysql /var/lib/mysql
 
-	if mysql_install_db --user=mysql \
+	mysql_install_db --user=mysql \
 		--datadir=/var/lib/mysql \
-		> /dev/null; then
-		echo " Sucess."
-	else
-		echo " Failure."
-		exit 1
-	fi
+		> /dev/null
 
 	echo "Configuring database..."
 
@@ -39,11 +31,11 @@ FLUSH PRIVILEGES;
 EOF
 	# https://mariadb.com/kb/en/mysqld-options/#-bootstrap
 
-	if ! mysqld --user=mysql --bootstrap < $tmpfile ; then
-		exit 1
-	fi
+	mysqld --user=mysql --bootstrap < $tmpfile
 
 	rm -rf $tmpfile
+
+	echo " OK!"
 else
 	echo " already configured."
 fi

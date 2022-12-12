@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 ./wait
 
 echo "Starting redis-server..."

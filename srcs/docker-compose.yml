@@ -118,6 +118,7 @@ services:
     depends_on:
       - wordpress
     restart: always
+    tty: true
     networks:
       - misc
     environment:

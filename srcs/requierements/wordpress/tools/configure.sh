@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 ./wait
 
 chown -R www-data:www-data ${WP_PATH}
