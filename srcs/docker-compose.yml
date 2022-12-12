@@ -136,10 +136,18 @@ services:
       - mysql-data:/var/mysql
       - backup-data:/var/backup
     restart: always
+    depends_on:
+      - database
     networks:
-      - misc
+      - wp-site
     environment:
+      - WAIT_HOSTS=database:3306
+      - WAIT_LOGGER_LEVEL=off
+      - DATE_SUFFIX_FORMAT=${DATE_SUFFIX_FORMAT}
       - WP_BACKUP_OCCURENCE=${WP_BACKUP_OCCURENCE}
+      - MYSQL_BACKUP_OCCURENCE=${MYSQL_BACKUP_OCCURENCE}
+      - WP_DB_USER=${WP_DB_USER}
+      - WP_DB_USER_PWD=${WP_DB_USER_PWD}
 
 networks:
   wp-site:
