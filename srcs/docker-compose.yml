@@ -141,7 +141,7 @@ volumes:
       device: "/home/plouvel/data/mysql"
       o: bind
   perso-data:
-    name: mysql-data
+    name: perso-data
     driver_opts:
       type: none
       device: "/home/plouvel/data/perso"
