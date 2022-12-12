@@ -126,6 +126,21 @@ services:
       - SSL_FTP_CERT_PATH=${SSL_FTP_CERT_PATH}
       - FTP_USER_NAME=${FTP_USER_NAME}
 
+  backup:
+    container_name: backup
+    build:
+      context:  requierements/backup
+    volumes:
+      - wp-data:/var/www/html/wordpress 
+      - perso-data:/var/www/html/perso 
+      - mysql-data:/var/mysql
+      - backup-data:/var/backup
+    restart: always
+    networks:
+      - misc
+    environment:
+      - WP_BACKUP_OCCURENCE=${WP_BACKUP_OCCURENCE}
+
 networks:
   wp-site:
     driver: bridge
@@ -156,4 +171,10 @@ volumes:
     driver_opts:
       type: none
       device: "/home/plouvel/data/perso"
+      o: bind
+  backup-data:
+    name: backup-data
+    driver_opts:
+      type: none
+      device: "/home/plouvel/data/backup"
       o: bind
