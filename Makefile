@@ -1,21 +1,30 @@
 DOCKER_COMPOSE_YML	=	srcs/docker-compose.yml
 
+RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
+$(eval $(RUN_ARGS):;@:)
+
 all:	build up
 
 build:
-	docker compose -f ${DOCKER_COMPOSE_YML} build
+	docker compose -f ${DOCKER_COMPOSE_YML} build ${RUN_ARGS}
 
 build_nocache:
-	docker compose -f ${DOCKER_COMPOSE_YML} build --no-cache
+	docker compose -f ${DOCKER_COMPOSE_YML} build --no-cache ${RUN_ARGS}
 
 up:
-	docker compose -f ${DOCKER_COMPOSE_YML} up
+	docker compose -f ${DOCKER_COMPOSE_YML} up ${RUN_ARGS}
 
 stop:
-	docker compose -f ${DOCKER_COMPOSE_YML} stop
+	docker compose -f ${DOCKER_COMPOSE_YML} stop ${RUN_ARGS}
 
 down:
-	docker compose -f ${DOCKER_COMPOSE_YML} down
+	docker compose -f ${DOCKER_COMPOSE_YML} down ${RUN_ARGS}
+
+exec:
+	docker compose -f ${DOCKER_COMPOSE_YML} exec ${RUN_ARGS}
+
+logs:
+	docker compose -f ${DOCKER_COMPOSE_YML} logs ${RUN_ARGS}
 
 wipe_volume_data:
 	sudo rm -rf /home/plouvel/data/wp/* /home/plouvel/data/mysql/* /home/plouvel/data/adminer/*
@@ -25,6 +34,6 @@ create_volume_dir:
 
 fclean:	stop down wipe_volume_data build_nocache
 
-re: clean up
+re: fclean up
 
-.PHONY: all build build_nocache up stop down wipe_volume_data fclean
+.PHONY: all build build_nocache up stop down exec logs wipe_volume_data fclean re
