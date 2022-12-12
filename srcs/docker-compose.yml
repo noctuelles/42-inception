@@ -1,4 +1,4 @@
-version:  '3'
+version:  '3.8'
 
 services:
   server:
@@ -10,14 +10,15 @@ services:
         - SSL_KEY_PATH=${SSL_KEY_PATH}
         - SSL_CERT_PATH=${SSL_CERT_PATH}
     volumes:
-      - /home/plouvel/data/html:/var/www/html
+      - wp-data:/var/www/html/wordpress 
+      - adminer-data:/var/www/html/adminer
     ports:
       - "443:443"
     restart: always
     networks:
-      - backend
+      - inception
     environment:
-      - WAIT_HOSTS=wordpress:9000, adminer:9000
+      - WAIT_HOSTS=wordpress:9000
       - WAIT_LOGGER_LEVEL=off
       - WP_PATH=${WP_PATH}
       - ADM_PATH=${ADM_PATH}
@@ -29,12 +30,12 @@ services:
   wordpress:
     container_name: wordpress
     volumes:
-      - /home/plouvel/data/html:/var/www/html
+      - wp-data:/var/www/html/wordpress 
     build:
       context:  requierements/wordpress
     restart: always
     networks:
-      - backend
+      - inception
     environment:
       - WAIT_HOSTS=database:3306
       - WAIT_LOGGER_LEVEL=off
@@ -53,7 +54,7 @@ services:
       context:  requierements/redis
     restart: always
     networks:
-      - backend
+      - inception
     environment:
       - WAIT_HOSTS=database:3306, wordpress:9000
       - WAIT_LOGGER_LEVEL=off
@@ -64,10 +65,10 @@ services:
     build:
       context:  requierements/mariadb
     volumes:
-      - /home/plouvel/data/mysql:/var/lib/mysql
+      - mysql-data:/var/lib/mysql
     restart: always
     networks:
-      - backend
+      - inception
     environment:
       - MYSQL_ROOT_PWD=${MYSQL_ROOT_PWD}
       - WP_DB_NAME=${WP_DB_NAME}
@@ -75,18 +76,62 @@ services:
       - WP_DB_USER_PWD=${WP_DB_USER_PWD}
 
   adminer:
+
     container_name: adminer
     build:
       context:  requierements/adminer
     volumes:
-      - /home/plouvel/data/html:/var/www/html
+      - adminer-data:/var/www/html/adminer
     restart: always
     networks:
-      - backend
+      - inception
     environment:
+      - WAIT_HOSTS=database:3306
+      - WAIT_LOGGER_LEVEL=off
       - ADM_PATH=${ADM_PATH}
       - ADM_MYSQL_DOWNLOAD_LINK=${ADM_MYSQL_DOWNLOAD_LINK}
 
+  ftp:
+    container_name: vsftpd
+    build:
+      context:  requierements/vsftpd
+      args:
+        - SSL_FTP_KEY_PATH=${SSL_FTP_KEY_PATH}
+        - SSL_FTP_CERT_PATH=${SSL_FTP_CERT_PATH}
+        - FTP_USER_NAME=${FTP_USER_NAME}
+        - FTP_USER_PWD=${FTP_USER_PWD}
+    volumes:
+      - wp-data:/var/www/html/wordpress 
+    ports:
+      - "20:20"
+      - "21:21"
+      - "21000:21000"
+    restart: always
+    environment:
+      - SSL_FTP_KEY_PATH=${SSL_FTP_KEY_PATH}
+      - SSL_FTP_CERT_PATH=${SSL_FTP_CERT_PATH}
+      - FTP_USER_NAME=${FTP_USER_NAME}
+
 networks:
-  backend:
+  inception:
     driver: bridge
+
+volumes:
+  wp-data:
+    name: wp-data
+    driver_opts:
+      type: none
+      device: "/home/plouvel/data/wp"
+      o: bind
+  adminer-data:
+    name: adminer-data
+    driver_opts:
+      type: none
+      device: "/home/plouvel/data/adminer"
+      o: bind
+  mysql-data:
+    name: mysql-data
+    driver_opts:
+      type: none
+      device: "/home/plouvel/data/mysql"
+      o: bind
