@@ -2,6 +2,8 @@
 
 DATE=$(date +"${DATE_SUFFIX_FORMAT}")
 
+echo "MySQL database dumped at " $(date) " !"
+
 mysqldump \
 	--host=database \
 	--all-databases \

@@ -4,6 +4,7 @@ FROM	debian:buster
 # Run apt-get update and install nginx and openssl
 RUN	apt-get update && apt-get install -y \
 	cron \
+	dumb-init \
 	mariadb-client
 
 COPY	tools/configure.sh 	/configure.sh
