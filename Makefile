@@ -8,9 +8,6 @@ all:	build up
 build:
 	docker compose -f ${DOCKER_COMPOSE_YML} build ${RUN_ARGS}
 
-build_nocache:
-	docker compose -f ${DOCKER_COMPOSE_YML} build --no-cache ${RUN_ARGS}
-
 up:
 	docker compose -f ${DOCKER_COMPOSE_YML} up -d ${RUN_ARGS}
 
@@ -41,8 +38,8 @@ wipe_backup:
 create_volume_dir:
 	mkdir -p /home/plouvel/data/wp && mkdir -p /home/plouvel/data/mysql && mkdir -p /home/plouvel/data/adminer && mkdir -p /home/plouvel/data/backup && /home/plouvel/data/perso
 
-fclean:	stop down wipe_volume_data build_nocache
+fclean:	stop down wipe_volume_data
 
 re: fclean up
 
-.PHONY: all build build_nocache up stop down exec logs wipe_volume_data fclean re
+.PHONY: all build up stop down exec logs wipe_volume_data wipe_backup fclean re
