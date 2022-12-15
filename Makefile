@@ -27,10 +27,13 @@ logs:
 	docker compose -f ${DOCKER_COMPOSE_YML} logs ${RUN_ARGS}
 
 wipe_volume_data:
-	sudo rm -rf /home/plouvel/data/wp/* /home/plouvel/data/mysql/* /home/plouvel/data/adminer/*
+	sudo rm -rf /home/plouvel/data/wp/* /home/plouvel/data/mysql/* /home/plouvel/data/adminer/* /home/plouvel/data/backup/*
+
+wipe_backup:
+	rm -rf /home/plouvel/data/backup/*
 
 create_volume_dir:
-	mkdir -p /home/plouvel/data/wp && mkdir -p /home/plouvel/data/mysql && mkdir -p /home/plouvel/data/adminer
+	mkdir -p /home/plouvel/data/wp && mkdir -p /home/plouvel/data/mysql && mkdir -p /home/plouvel/data/adminer && mkdir -p /home/plouvel/data/backup && /home/plouvel/data/perso
 
 fclean:	stop down wipe_volume_data build_nocache
 

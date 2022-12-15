@@ -138,10 +138,11 @@ services:
     restart: always
     depends_on:
       - database
+      - wordpress
     networks:
       - wp-site
     environment:
-      - WAIT_HOSTS=database:3306
+      - WAIT_HOSTS=database:3306, wordpress:9000
       - WAIT_LOGGER_LEVEL=off
       - DATE_SUFFIX_FORMAT=${DATE_SUFFIX_FORMAT}
       - WP_BACKUP_OCCURENCE=${WP_BACKUP_OCCURENCE}

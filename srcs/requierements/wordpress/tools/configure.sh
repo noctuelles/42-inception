@@ -4,34 +4,34 @@ set -e
 
 ./wait
 
-chown -R www-data:www-data ${WP_PATH}
+chown -R www-data:www-data /var/www
 
-if ! wp --allow-root --path="${WP_PATH}" config get > /dev/null; then
-	wp --allow-root --path="${WP_PATH}" core download
+if ! su-exec www-data wp --path="${WP_PATH}" config get > /dev/null; then
+	su-exec www-data wp --path="${WP_PATH}" core download
 
-	wp --allow-root --path="${WP_PATH}" core config \
+	su-exec www-data wp --path="${WP_PATH}" core config \
 		--dbhost=database \
 		--dbname=${WP_DB_NAME} \
 		--dbuser=${WP_DB_USER} \
 		--dbpass=${WP_DB_USER_PWD};
 
-	wp --allow-root --path="${WP_PATH}" config set WP_REDIS_HOST cache
-	wp --allow-root --path="${WP_PATH}" config set WP_REDIS_PORT 6379 
-	wp --allow-root --path="${WP_PATH}" config set WP_REDIS_SCHEME tcp 
-	wp --allow-root --path="${WP_PATH}" config set WP_REDIS_DATABASE 0 
-	wp --allow-root --path="${WP_PATH}" config set WP_CACHE_KEY_SALT plouvel.42.fr 
-	wp --allow-root --path="${WP_PATH}" config set WP_CACHE true 
+	su-exec www-data wp --path="${WP_PATH}" config set WP_REDIS_HOST cache
+	su-exec www-data wp --path="${WP_PATH}" config set WP_REDIS_PORT 6379 
+	su-exec www-data wp --path="${WP_PATH}" config set WP_REDIS_SCHEME tcp 
+	su-exec www-data wp --path="${WP_PATH}" config set WP_REDIS_DATABASE 0 
+	su-exec www-data wp --path="${WP_PATH}" config set WP_CACHE_KEY_SALT plouvel.42.fr 
+	su-exec www-data wp --path="${WP_PATH}" config set WP_CACHE true 
 
-	wp --allow-root --path="${WP_PATH}" core install \
+	su-exec www-data wp --path="${WP_PATH}" core install \
 		--url=plouvel.42.fr \
 		--title="${WP_BLOG_TITLE}" \
 		--admin_name=${WP_ADMIN_NAME} \
 		--admin_password=${WP_ADMIN_PWD} \
 		--admin_email=${WP_ADMIN_EMAIL}
 
-	wp --allow-root --path="${WP_PATH}" plugin install redis-cache --activate 
-	wp --allow-root --path="${WP_PATH}" plugin update --all
-    	wp --allow-root --path="${WP_PATH}" redis enable
+	su-exec www-data wp --path="${WP_PATH}" plugin install redis-cache --activate 
+	su-exec www-data wp --path="${WP_PATH}" plugin update --all
+    	su-exec www-data wp --path="${WP_PATH}" redis enable
 fi
 
 echo "Starting php-fpm..."

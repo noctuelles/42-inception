@@ -33,10 +33,11 @@ RUN curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli
 
 ADD	https://github.com/ufoscout/docker-compose-wait/releases/download/2.9.0/wait	/wait
 COPY	tools/configure.sh 	/configure.sh
+COPY	tools/su-exec		/bin/su-exec
 COPY	conf/php.ini		/etc/php/8.2/fpm/php.ini
 COPY	conf/www.conf		/etc/php/8.2/fpm/pool.d/www.conf
 
-RUN	chmod +x /configure.sh && chmod +x /wait
+RUN	chmod +x /configure.sh && chmod +x /wait && chmod +x /bin/su-exec
 
 EXPOSE 9000/tcp
 
