@@ -12,7 +12,7 @@ build_nocache:
 	docker compose -f ${DOCKER_COMPOSE_YML} build --no-cache ${RUN_ARGS}
 
 up:
-	docker compose -f ${DOCKER_COMPOSE_YML} up ${RUN_ARGS}
+	docker compose -f ${DOCKER_COMPOSE_YML} up -d ${RUN_ARGS}
 
 stop:
 	docker compose -f ${DOCKER_COMPOSE_YML} stop ${RUN_ARGS}
@@ -32,7 +32,8 @@ wipe_volume_data: stop down
 		/home/plouvel/data/mysql/* \
 		/home/plouvel/data/mysql/.init* \
 		/home/plouvel/data/adminer/* \
-		/home/plouvel/data/backup/*
+		/home/plouvel/data/backup/* \
+		/home/plouvel/data/backup/.init*
 
 wipe_backup:
 	rm -rf /home/plouvel/data/backup/*
