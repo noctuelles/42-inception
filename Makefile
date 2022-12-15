@@ -29,6 +29,7 @@ wipe_volume_data: stop down
 		/home/plouvel/data/mysql/* \
 		/home/plouvel/data/mysql/.init* \
 		/home/plouvel/data/adminer/* \
+		/home/plouvel/data/adminer/.init* \
 		/home/plouvel/data/backup/* \
 		/home/plouvel/data/backup/.init*
 
@@ -36,7 +37,11 @@ wipe_backup:
 	rm -rf /home/plouvel/data/backup/*
 
 create_volume_dir:
-	mkdir -p /home/plouvel/data/wp && mkdir -p /home/plouvel/data/mysql && mkdir -p /home/plouvel/data/adminer && mkdir -p /home/plouvel/data/backup && /home/plouvel/data/perso
+	mkdir -p /home/plouvel/data/wp \
+		&& mkdir -p /home/plouvel/data/mysql \
+		&& mkdir -p /home/plouvel/data/adminer \
+		&& mkdir -p /home/plouvel/data/backup \
+		&& /home/plouvel/data/perso
 
 fclean:	stop down wipe_volume_data
 
