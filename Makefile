@@ -1,4 +1,4 @@
-DOCKER_COMPOSE_YML	=	srcs/docker-compose.yml
+DOCKER_COMPOSE_YML	=	./srcs/docker-compose.yml
 
 RUN_ARGS := $(wordlist 2,$(words $(MAKECMDGOALS)),$(MAKECMDGOALS))
 $(eval $(RUN_ARGS):;@:)
@@ -26,8 +26,13 @@ exec:
 logs:
 	docker compose -f ${DOCKER_COMPOSE_YML} logs ${RUN_ARGS}
 
-wipe_volume_data:
-	sudo rm -rf /home/plouvel/data/wp/* /home/plouvel/data/mysql/* /home/plouvel/data/adminer/* /home/plouvel/data/backup/*
+wipe_volume_data: stop down
+	sudo rm -rf /home/plouvel/data/wp/* \
+		/home/plouvel/data/wp/.init* \
+		/home/plouvel/data/mysql/* \
+		/home/plouvel/data/mysql/.init* \
+		/home/plouvel/data/adminer/* \
+		/home/plouvel/data/backup/*
 
 wipe_backup:
 	rm -rf /home/plouvel/data/backup/*

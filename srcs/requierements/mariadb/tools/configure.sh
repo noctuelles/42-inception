@@ -2,11 +2,10 @@
 
 set -e
 
-echo  -n "Configuring MariaDB..."
+chown -R mysql:mysql /var/lib/mysql
 
-if [ ! -d "/var/lib/mysql/mysql" ]; then
-	
-	chown -R mysql:mysql /var/lib/mysql
+if [ ! -f "/var/lib/mysql/.init-sql" ]; then
+	echo "Configuring MariaDB..."
 
 	mysql_install_db --user=mysql \
 		--datadir=/var/lib/mysql \
@@ -33,9 +32,7 @@ EOF
 
 	rm -rf $tmpfile
 
-	echo " OK!"
-else
-	echo " already configured."
+	touch /var/lib/mysql/.init-sql
 fi
 
 echo "Starting mysqld..."

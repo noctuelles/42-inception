@@ -6,7 +6,7 @@ set -e
 
 chown -R www-data:www-data /var/www
 
-if ! su-exec www-data wp --path="${WP_PATH}" config get > /dev/null; then
+if [ ! -f "${WP_PATH}/.init-wp" ]; then
 	su-exec www-data wp --path="${WP_PATH}" core download
 
 	su-exec www-data wp --path="${WP_PATH}" core config \
@@ -32,6 +32,8 @@ if ! su-exec www-data wp --path="${WP_PATH}" config get > /dev/null; then
 	su-exec www-data wp --path="${WP_PATH}" plugin install redis-cache --activate 
 	su-exec www-data wp --path="${WP_PATH}" plugin update --all
     	su-exec www-data wp --path="${WP_PATH}" redis enable
+
+	touch "${WP_PATH}/.init-wp"
 fi
 
 echo "Starting php-fpm..."

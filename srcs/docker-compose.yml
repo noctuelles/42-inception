@@ -161,30 +161,35 @@ networks:
 
 volumes:
   wp-data:
+    driver: local
     name: wp-data
     driver_opts:
       type: none
       device: "/home/plouvel/data/wp"
       o: bind
   adminer-data:
+    driver: local
     name: adminer-data
     driver_opts:
       type: none
       device: "/home/plouvel/data/adminer"
       o: bind
   mysql-data:
+    driver: local
     name: mysql-data
     driver_opts:
       type: none
       device: "/home/plouvel/data/mysql"
       o: bind
   perso-data:
+    driver: local
     name: perso-data
     driver_opts:
       type: none
       device: "/home/plouvel/data/perso"
       o: bind
   backup-data:
+    driver: local
     name: backup-data
     driver_opts:
       type: none
