@@ -19,6 +19,7 @@ DELETE FROM mysql.user WHERE User='';
 DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
 DROP DATABASE IF EXISTS test;
 DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
+UPDATE mysql.user SET plugin='mysql_native_password' WHERE user='root' AND host='localhost';
 FLUSH PRIVILEGES;
 
 CREATE DATABASE ${WP_DB_NAME} CHARACTER SET utf8 COLLATE utf8_general_ci;
