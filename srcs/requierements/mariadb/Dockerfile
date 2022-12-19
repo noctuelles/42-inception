@@ -1,6 +1,7 @@
 FROM	debian:buster
 
 RUN	apt-get update && apt-get install -y \
+	dumb-init \
 	mariadb-server \
 	mariadb-common \
 	mariadb-client

@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/dumb-init /bin/bash
 
 set -e
 
@@ -17,9 +17,9 @@ if [ ! -f "/var/lib/mysql/.init-sql" ]; then
 UPDATE mysql.user SET Password = PASSWORD('${MYSQL_ROOT_PWD}') WHERE User = 'root';
 DELETE FROM mysql.user WHERE User='';
 DELETE FROM mysql.user WHERE User='root' AND Host NOT IN ('localhost', '127.0.0.1', '::1');
+UPDATE mysql.user SET plugin='mysql_native_password' WHERE user='root' AND host='localhost';
 DROP DATABASE IF EXISTS test;
 DELETE FROM mysql.db WHERE Db='test' OR Db='test\\_%';
-UPDATE mysql.user SET plugin='mysql_native_password' WHERE user='root' AND host='localhost';
 FLUSH PRIVILEGES;
 
 CREATE DATABASE ${WP_DB_NAME} CHARACTER SET utf8 COLLATE utf8_general_ci;
@@ -38,4 +38,4 @@ fi
 
 echo "Starting mysqld..."
 
-exec mysqld --user=mysql
+exec mysqld_safe --user=mysql
